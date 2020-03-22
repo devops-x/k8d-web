@@ -61,7 +61,7 @@ function fakeList(count: number): CardListItemDataType[] {
       updatedAt: new Date(new Date().getTime() - 1000 * 60 * 60 * 2 * i).getTime(),
       createdAt: new Date(new Date().getTime() - 1000 * 60 * 60 * 2 * i).getTime(),
       subDescription: desc[i % 5],
-      description:
+      descr:
         '在中台产品的研发过程中，会出现不同的设计规范和实现方式，但其中往往存在很多类似的页面和组件，这些类似的组件会被抽离成一套标准规范。',
       activeUser: Math.ceil(Math.random() * 100000) + 100000,
       newUser: Math.ceil(Math.random() * 1000) + 1000,

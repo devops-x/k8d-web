@@ -2,7 +2,7 @@ import { AnyAction, Reducer } from 'redux';
 
 import { EffectsCommandMap } from 'dva';
 import { CardListItemDataType } from './data.d';
-import { queryFakeList } from './service';
+import { queryServerList } from './service';
 
 export interface StateType {
   list: CardListItemDataType[];
@@ -33,10 +33,10 @@ const Model: ModelType = {
 
   effects: {
     *fetch({ payload }, { call, put }) {
-      const response = yield call(queryFakeList, payload);
+      const response = yield call(queryServerList, payload);
       yield put({
         type: 'queryList',
-        payload: Array.isArray(response) ? response : [],
+        payload: Array.isArray(response.content) ? response.content : [],
       });
     },
   },

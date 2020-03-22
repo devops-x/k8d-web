@@ -18,7 +18,7 @@ export interface CardListItemDataType {
   updatedAt: number;
   createdAt: number;
   subDescription: string;
-  description: string;
+  descr: string;
   activeUser: number;
   newUser: number;
   star: number;
@@ -26,4 +26,16 @@ export interface CardListItemDataType {
   message: number;
   content: string;
   members: Member[];
+  metadata: InterfaceMetadata;
+  status: InterfaceStatus,
+}
+
+interface InterfaceMetadata {
+  name: string;
+  creationTimestamp: string;
+}
+
+interface InterfaceStatus {
+  replicas: number;
+  availableReplicas: number;
 }

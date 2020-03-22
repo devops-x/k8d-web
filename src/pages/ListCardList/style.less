@@ -32,6 +32,40 @@
   }
 }
 
+.cardInfo {
+  margin-top: 16px;
+  margin-left: 40px;
+  zoom: 1;
+  &::before,
+  &::after {
+    display: table;
+    content: ' ';
+  }
+  &::after {
+    clear: both;
+    height: 0;
+    font-size: 0;
+    visibility: hidden;
+  }
+  & > div {
+    position: relative;
+    float: left;
+    width: 50%;
+    text-align: left;
+    p {
+      margin: 0;
+      font-size: 15px;
+      line-height: 32px;
+    }
+    p:first-child {
+      margin-bottom: 4px;
+      color: @text-color-secondary;
+      font-size: 12px;
+      line-height: 20px;
+    }
+  }
+}
+
 .extraImg {
   width: 155px;
   margin-top: -20px;
@@ -39,15 +73,6 @@
   img {
     width: 100%;
   }
-}
-
-.newButton {
-  width: 100%;
-  height: 188px;
-  color: @text-color-secondary;
-  background-color: @component-background;
-  border-color: @border-color-base;
-  border-radius: 4px;
 }
 
 .cardAvatar {

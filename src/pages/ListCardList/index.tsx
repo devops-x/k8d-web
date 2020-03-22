@@ -1,6 +1,7 @@
-import { PlusOutlined } from '@ant-design/icons';
-import { Button, Card, List, Typography } from 'antd';
+
+import { Card, List } from 'antd';
 import React, { Component } from 'react';
+import dayjs from 'dayjs';
 
 import { Dispatch } from 'redux';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
@@ -9,7 +10,14 @@ import { StateType } from './model';
 import { CardListItemDataType } from './data.d';
 import styles from './style.less';
 
-const { Paragraph } = Typography;
+dayjs.locale('zh');
+
+const duration = function(end: any, start: any) {
+  const daysDiff = end.diff(start, 'day'); // produces `0`, expected `1`
+  const hoursDiff = end.diff(start, "hour"); // expected result
+  const minutesDiff = end.diff(start, "minute") % 60; // expected result
+  return `${daysDiff}天 ${hoursDiff}时 ${minutesDiff}分`;
+}
 
 interface ListCardListProps {
   listCardList: StateType;
@@ -21,6 +29,26 @@ interface ListCardListState {
   done: boolean;
   current?: Partial<CardListItemDataType>;
 }
+
+const CardInfo: React.FC<{
+  status: React.ReactNode;
+  metadata: React.ReactNode;
+}> = ({ status, metadata}) => {
+  const replicas = `${status.availableReplicas} / ${status.replicas}`;
+  const age = duration(dayjs(), dayjs(metadata.creationTimestamp));
+  return (
+    <div className={styles.cardInfo}>
+      <div>
+        <p>副本</p>
+        <p>{replicas}</p>
+      </div>
+      <div>
+        <p>时长</p>
+        <p>{age}</p>
+      </div>
+    </div>
+  );
+};
 
 class ListCardList extends Component<ListCardListProps, ListCardListState> {
   componentDidMount() {
@@ -38,25 +66,15 @@ class ListCardList extends Component<ListCardListProps, ListCardListState> {
       listCardList: { list },
       loading,
     } = this.props;
-
     const content = (
       <div className={styles.pageHeaderContent}>
         <p>
-          段落示意：蚂蚁金服务设计平台 ant.design，用最小的工作量，无缝接入蚂蚁金服生态，
-          提供跨越设计与开发的体验解决方案。
+          提供 Gtilab repo URL 自动部署服务。
         </p>
         <div className={styles.contentLink}>
           <a>
             <img alt="" src="https://gw.alipayobjects.com/zos/rmsportal/MjEImQtenlyueSmVEfUD.svg" />{' '}
-            快速开始
-          </a>
-          <a>
-            <img alt="" src="https://gw.alipayobjects.com/zos/rmsportal/NbuDUAuBlIApFuDvWiND.svg" />{' '}
-            产品简介
-          </a>
-          <a>
-            <img alt="" src="https://gw.alipayobjects.com/zos/rmsportal/ohOEPSYdDTNnyMbGuyLb.svg" />{' '}
-            产品文档
+            新增服务
           </a>
         </div>
       </div>
@@ -70,7 +88,6 @@ class ListCardList extends Component<ListCardListProps, ListCardListState> {
         />
       </div>
     );
-    const nullData: Partial<CardListItemDataType> = {};
     return (
       <PageHeaderWrapper content={content} extraContent={extraContent}>
         <div className={styles.cardList}>
@@ -78,34 +95,26 @@ class ListCardList extends Component<ListCardListProps, ListCardListState> {
             rowKey="id"
             loading={loading}
             grid={{ gutter: 24, lg: 3, md: 2, sm: 1, xs: 1 }}
-            dataSource={[nullData, ...list]}
-            renderItem={item => {
-              if (item && item.id) {
-                return (
-                  <List.Item key={item.id}>
-                    <Card
-                      hoverable
-                      className={styles.card}
-                      actions={[<a key="option1">操作一</a>, <a key="option2">操作二</a>]}
-                    >
-                      <Card.Meta
-                        avatar={<img alt="" className={styles.cardAvatar} src={item.avatar} />}
-                        title={<a>{item.title}</a>}
-                        description={
-                          <Paragraph className={styles.item} ellipsis={{ rows: 3 }}>
-                            {item.description}
-                          </Paragraph>
-                        }
-                      />
-                    </Card>
-                  </List.Item>
-                );
-              }
+            dataSource={[...list]}
+            renderItem={(item) => {
               return (
-                <List.Item>
-                  <Button type="dashed" className={styles.newButton}>
-                    <PlusOutlined /> 新增产品
-                  </Button>
+                <List.Item key={item.id}>
+                  <Card
+                    hoverable
+                    className={styles.card}
+                    actions={[<a key="scale">伸缩</a>, <a key="edit">编辑</a>, <a key="delete">删除</a>]}
+                  >
+                    <Card.Meta
+                      avatar={<img alt="" className={styles.cardAvatar} src={item.avatar} />}
+                      title={<a>{item.metadata.name}</a>}
+                    />
+                    <div className={styles.cardItemContent}>
+                      <CardInfo
+                          status={item.status}
+                          metadata={item.metadata}
+                      />
+                    </div>
+                  </Card>
                 </List.Item>
               );
             }}

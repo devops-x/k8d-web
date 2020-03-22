@@ -57,5 +57,5 @@ export default {
   },
   title: 'K8d',
   pwa: false,
-  iconfontUrl: '//at.alicdn.com/t/font_1706265_b24782orn1s.js',
+  iconfontUrl: '//at.alicdn.com/t/font_1706394_9ebyl8njm58.js',
 } as DefaultSettings;

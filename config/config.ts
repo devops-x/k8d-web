@@ -108,37 +108,21 @@ export default {
               redirect: '/dashboard',
             },
             {
-              path: '/admin',
-              name: 'admin',
-              icon: 'crown',
-              component: './Admin',
-              authority: ['admin'],
-              routes: [
-                {
-                  path: '/admin/sub-page',
-                  name: 'sub-page',
-                  icon: 'smile',
-                  component: './Welcome',
-                  authority: ['admin'],
-                },
-              ],
-            },
-            {
               name: 'dashboard',
-              icon: 'smile',
+              icon: 'icon-yibiaopan',
               path: '/dashboard',
               component: './DashboardAnalysis',
             },
             {
               name: 'service',
-              icon: 'smile',
+              icon: 'icon-yingyong',
               path: '/services',
               component: './ListCardList',
             },
             {
               path: '/help',
               name: 'help',
-              icon: 'smile',
+              icon: 'icon-bangzhu',
               component: './Welcome',
             },
             {
@@ -177,7 +161,7 @@ export default {
         resourcePath: string;
       },
       _: string,
-      localName: string,
+      localName: string
     ) => {
       if (
         context.resourcePath.includes('node_modules') ||

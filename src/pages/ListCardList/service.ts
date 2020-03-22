@@ -5,3 +5,9 @@ export async function queryFakeList(params: { count: number }) {
     params,
   });
 }
+
+export async function queryServerList(params: { count: number }) {
+  return request('/servers', {
+    params,
+  });
+}

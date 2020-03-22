@@ -61,6 +61,46 @@ class ListCardList extends Component<ListCardListProps, ListCardListState> {
     });
   }
 
+  textToImg(canvas) {
+    if (!canvas) {
+      return;
+    }
+    const deploymentName = canvas.getAttribute('title');
+    //名字
+    var name = deploymentName ? deploymentName.substring(0, 1).toLocaleUpperCase() : '';
+    //图像大小
+    var size = 60;
+    //背景颜色
+    var colours = [
+            "#1abc9c", "#2ecc71", "#3498db", "#9b59b6", "#34495e", "#16a085", "#27ae60", "#2980b9", "#8e44ad", "#2c3e50",
+            "#f1c40f", "#e67e22", "#e74c3c", "#00bcd4", "#95a5a6", "#f39c12", "#d35400", "#c0392b", "#bdc3c7", "#7f8c8d"
+        ],
+        nameSplit = String(name).split(' '),
+        initials, charIndex, colourIndex, context, dataURI;
+    if (nameSplit.length == 1) {
+        initials = nameSplit[0] ? nameSplit[0].charAt(0) : '?';
+    } else {
+        initials = nameSplit[0].charAt(0) + nameSplit[1].charAt(0);
+    }
+    //上面对名字进行一系列处理，下面找到绘图元素
+    charIndex = (initials == '?' ? 72 : initials.charCodeAt(0)) - 64;
+    colourIndex = charIndex % 20;
+    //图像大小
+    canvas.width = size;
+    canvas.height = size;
+    context = canvas.getContext("2d");
+    //图像背景颜色
+    context.fillStyle = colours[colourIndex - 1];
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    //字体大小
+    context.font = Math.round(canvas.width / 2) + "px 'Microsoft Yahei'";
+    context.textAlign = "center";
+    //字体颜色
+    context.fillStyle = "#FFF";
+    context.fillText(initials, size / 2, size / 1.5);
+    return canvas.toDataURL("image/png");
+  }
+
   render() {
     const {
       listCardList: { list },
@@ -105,7 +145,7 @@ class ListCardList extends Component<ListCardListProps, ListCardListState> {
                     actions={[<a key="scale">伸缩</a>, <a key="edit">编辑</a>, <a key="delete">删除</a>]}
                   >
                     <Card.Meta
-                      avatar={<img alt="" className={styles.cardAvatar} src={item.avatar} />}
+                      avatar={<canvas ref={this.textToImg} className={styles.cardAvatar} title={item.metadata.name}/>}
                       title={<a>{item.metadata.name}</a>}
                     />
                     <div className={styles.cardItemContent}>
